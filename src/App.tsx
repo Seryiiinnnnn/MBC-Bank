@@ -21,7 +21,7 @@ import { AccountDetails, Transaction } from './types';
 import { INITIAL_TRANSACTIONS } from './data';
 
 const DEFAULT_ACCOUNT: AccountDetails = {
-  accountHolderName: 'CHONG SER YIN',
+  accountHolderName: 'Sunny',
   accountNumber: '164283948529',
   bankName: 'MBC Malaysia',
   balance: 1500000.00, // Starting default at RM 1,500,000.00
@@ -37,7 +37,11 @@ export default function App() {
     try {
       const saved = localStorage.getItem(LOCAL_STORAGE_ACCOUNT_KEY);
       if (saved) {
-        return JSON.parse(saved);
+        const parsed = JSON.parse(saved);
+        if (parsed.accountHolderName === 'CHONG SER YIN') {
+          parsed.accountHolderName = 'Sunny';
+        }
+        return parsed;
       }
     } catch (e) {
       console.error("Failed to load account from local storage, using defaults", e);
