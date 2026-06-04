@@ -162,12 +162,44 @@ export default function MobileApp({
       return;
     }
 
-    // Trigger random OTP generation for security verification
-    const randomOtp = Math.floor(100000 + Math.random() * 900000).toString();
-    setCurrentOtp(randomOtp);
-    setUserOtpInput('');
-    setOtpError('');
-    setActiveScreen('otp');
+    // Direct Instant Transfer without TAC page
+    setActiveScreen('processing');
+
+    setTimeout(() => {
+      const amountNum = parseFloat(form.amount || '0');
+      const updatedBalance = account.balance - amountNum;
+      
+      // Select selected bank
+      const targetBank = MALAYSIAN_BANKS.find(b => b.id === form.recipientBankId);
+      
+      // Create transaction
+      const newTx: Transaction = {
+        id: `TXN-MBC-${Math.floor(100000 + Math.random() * 900000)}`,
+        title: `Transfer to ${form.recipientName.toUpperCase()}`,
+        description: form.reference || 'Instant Transfer',
+        amount: amountNum,
+        type: 'debit',
+        date: new Date().toLocaleString('en-MY', {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+          hour12: true
+        }).toUpperCase(),
+        recipientBank: targetBank ? targetBank.name : 'MBC Bank',
+        recipientAccount: form.recipientAccount,
+        referenceId: `MBC${Date.now().toString().slice(-10)}`,
+        status: 'SUCCESSFUL',
+      };
+
+      // Deduct balance and add transaction
+      updateAccount({ balance: Math.max(0, updatedBalance) });
+      addTransaction(newTx);
+      setLatestTransaction(newTx);
+      setActiveScreen('receipt');
+    }, 2000); // 2 seconds processing loading
   };
 
   // Submit and deduct funds
@@ -723,7 +755,7 @@ export default function MobileApp({
                     className="w-full py-4 bg-blue-700 hover:bg-blue-800 active:scale-[0.98] text-white font-black uppercase text-[10px] tracking-wider rounded-xl shadow-md transition-all flex items-center justify-center space-x-2 cursor-pointer shadow-blue-105"
                     id="submit-transfer-form-btn"
                   >
-                    <span>Request Transfer Securely</span>
+                    <span>Confirm & Transfer Now</span>
                   </button>
                 </div>
               </form>
