@@ -322,11 +322,11 @@ export default function ControlPanel({
             </div>
           </div>
 
-          {/* Simulated Incoming RM500,000 Transfer Block */}
+          {/* Simulated Incoming RM100,000 Transfer Block */}
           <div className="border-t border-slate-100 pt-4" id="incoming-simulated-transfer-config">
             <div className="flex items-center space-x-1.5 mb-2">
               <Bell className="w-4 h-4 text-blue-700" />
-              <h4 className="text-xs font-bold text-slate-700 uppercase tracking-wider">Simulate Incoming Transfer (RM500,000)</h4>
+              <h4 className="text-xs font-bold text-slate-700 uppercase tracking-wider">Simulate Incoming Transfer (RM100,000)</h4>
             </div>
             
             <div className="bg-slate-50 border border-slate-200/80 rounded-2xl p-4 space-y-3">

@@ -302,6 +302,18 @@ export default function MobileApp({
         )}
       </AnimatePresence>
 
+      {/* High-Fidelity Smartphone Status Bar */}
+      <div className="bg-slate-50 text-slate-850 px-5 pt-3 pb-1 flex justify-between items-center text-[10px] font-bold select-none z-40 shrink-0 border-b border-slate-100">
+        <span className="font-sans tracking-tight leading-none">
+          {!hideTime ? timeStr : <span className="opacity-0">12:34</span>}
+        </span>
+        <div className="flex items-center space-x-1.5 text-slate-700">
+          <Wifi className="w-3.5 h-3.5" />
+          <span className="text-[8.5px] font-extrabold tracking-tighter col-span-1">5G</span>
+          <Battery className="w-4 h-4" />
+        </div>
+      </div>
+
       <div className="flex-1 flex flex-col bg-slate-50 pt-0 overflow-hidden relative">
         <AnimatePresence mode="wait">
           {/* SCREEN: LOGIN STATUS */}
@@ -320,6 +332,42 @@ export default function MobileApp({
                   <span className="text-4xl font-extrabold text-slate-850 font-mono tracking-tighter leading-none">{timeStr}</span>
                   <span className="text-[9px] font-bold uppercase text-slate-450 tracking-widest mt-1">Saturday, May 30</span>
                 </div>
+              )}
+
+              {/* HIGH-FIDELITY SMARTPHONE LOCK SCREEN NOTIFICATION POP-UP */}
+              {activeNotification && (
+                <motion.div
+                  initial={{ scale: 0.95, y: -10, opacity: 0 }}
+                  animate={{ scale: 1, y: 0, opacity: 1 }}
+                  className="w-full max-w-xs mx-auto bg-white/95 backdrop-blur-md rounded-2xl p-4 shadow-lg border border-slate-200/80 my-2 cursor-pointer active:scale-98 transition-transform select-none"
+                  id="lockscreen-pop-up-widget"
+                  onClick={() => {
+                    // Direct deep link: bypass lock or trigger dashboard transition
+                    setActiveScreen('dashboard');
+                    if (clearNotification) clearNotification();
+                  }}
+                >
+                  <div className="flex justify-between items-center text-[10px] text-blue-700 font-bold uppercase tracking-wider mb-2">
+                    <span className="flex items-center gap-1.5">
+                      <span className="w-4 h-4 bg-blue-700 rounded-md flex items-center justify-center text-white text-[8px] font-black">M</span>
+                      <span className="font-extrabold font-sans">MBC Alert System</span>
+                    </span>
+                    {!hideTime && <span className="text-slate-450 font-medium font-mono">Just Now</span>}
+                  </div>
+                  <div className="space-y-0.5 text-left">
+                    <p className="text-xs font-black text-slate-850 flex items-center gap-1">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shrink-0" />
+                      <span>DuitNow RM100,000.00 Received</span>
+                    </p>
+                    <p className="text-[10px] sm:text-[11px] text-slate-650 leading-relaxed font-semibold">
+                      Payment credited from <span className="text-slate-900 font-black uppercase">{activeNotification.sender}</span>.
+                    </p>
+                  </div>
+                  <div className="text-[8.5px] text-slate-400 mt-2.5 pt-1.5 border-t border-slate-100/80 flex justify-between items-center font-semibold">
+                    <span>Tap lockscreen banner to login & verify balance</span>
+                    <ChevronRight className="w-3 h-3 text-blue-700 font-black" />
+                  </div>
+                </motion.div>
               )}
 
               <div className="flex flex-col items-center pt-4">

@@ -126,7 +126,7 @@ export default function App() {
   }, [timerCountdown, incomingSender]);
 
   const handleTriggerIncomingTransfer = () => {
-    const transferAmount = 500000.00;
+    const transferAmount = 100000.00;
     
     // Add transaction
     const newTx: Transaction = {
